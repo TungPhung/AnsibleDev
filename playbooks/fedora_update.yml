@@ -1,0 +1,82 @@
+---
+- name: Update Fedora systems and install packages
+  hosts: fedora_servers
+  become: yes
+  vars:
+    # Define packages to install
+    packages_to_install:
+      - vim
+      - git
+      - htop
+      - tmux
+      - curl
+      - wget
+    
+    # Set to true to reboot after updates if needed
+    reboot_after_update: false
+    
+    # Maximum reboot wait time in seconds
+    reboot_timeout: 600
+
+  tasks:
+    - name: Update all packages with dnf
+      ansible.builtin.dnf:
+        name: "*"
+        state: latest
+        update_cache: yes
+      register: dnf_update_result
+
+    - name: Display update results
+      ansible.builtin.debug:
+        msg: "System updated. Changes made: {{ dnf_update_result.changed }}"
+
+    - name: Install specific packages
+      ansible.builtin.dnf:
+        name: "{{ packages_to_install }}"
+        state: present
+      register: install_result
+
+    - name: Display installed packages
+      ansible.builtin.debug:
+        msg: "Packages installed: {{ install_result.results | map(attribute='item') | list }}"
+      when: install_result.changed
+
+    - name: Check if reboot is required
+      ansible.builtin.stat:
+        path: /var/run/reboot-required
+      register: reboot_required_file
+
+    - name: Check if kernel was updated
+      ansible.builtin.shell: |
+        LAST_KERNEL=$(rpm -q --last kernel | head -1 | awk '{print $1}')
+        CURRENT_KERNEL="kernel-$(uname -r)"
+        if [ "$LAST_KERNEL" != "$CURRENT_KERNEL" ]; then
+          echo "reboot_needed"
+        else
+          echo "no_reboot_needed"
+        fi
+      register: kernel_check
+      changed_when: false
+
+    - name: Reboot system if needed and configured
+      ansible.builtin.reboot:
+        msg: "Rebooting system after updates"
+        reboot_timeout: "{{ reboot_timeout }}"
+      when:
+        - reboot_after_update | bool
+        - kernel_check.stdout == "reboot_needed"
+
+    - name: Display reboot status
+      ansible.builtin.debug:
+        msg: "System requires reboot due to kernel update. Set reboot_after_update=true to enable automatic reboot."
+      when:
+        - not reboot_after_update | bool
+        - kernel_check.stdout == "reboot_needed"
+
+    - name: Clean up dnf cache
+      ansible.builtin.command: dnf clean all
+      changed_when: false
+
+    - name: Display completion message
+      ansible.builtin.debug:
+        msg: "Update and package installation complete on {{ inventory_hostname }}"
