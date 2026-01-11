@@ -1,15 +1,16 @@
 ---
-- name: Disable MAC randomization on Fedora
-  hosts: all
+- name: Disable MAC address randomization on Fedora
+  hosts: fedora_systems
   become: yes
+  
   tasks:
-    - name: Ensure NetworkManager conf.d directory exists
+    - name: Ensure NetworkManager config directory exists
       ansible.builtin.file:
         path: /etc/NetworkManager/conf.d
         state: directory
         mode: '0755'
 
-    - name: Create NetworkManager configuration to disable MAC randomization
+    - name: Create configuration to disable MAC randomization
       ansible.builtin.copy:
         dest: /etc/NetworkManager/conf.d/00-disable-mac-randomization.conf
         content: |
@@ -22,13 +23,14 @@
         mode: '0644'
       notify: Restart NetworkManager
 
-    - name: Disable MAC randomization for existing connections
+    - name: Disable MAC randomization for existing WiFi connections
       ansible.builtin.shell: |
-        for conn in $(nmcli -t -f NAME connection show); do
-          nmcli connection modify "$conn" wifi.cloned-mac-address preserve 2>/dev/null || true
-          nmcli connection modify "$conn" ethernet.cloned-mac-address preserve 2>/dev/null || true
+        for conn in $(nmcli -t -f NAME,TYPE connection show | grep ':802-11-wireless$' | cut -d: -f1); do
+          nmcli connection modify "$conn" wifi.cloned-mac-address preserve
+          nmcli connection modify "$conn" 802-11-wireless.cloned-mac-address preserve
         done
       changed_when: false
+      ignore_errors: yes
 
   handlers:
     - name: Restart NetworkManager

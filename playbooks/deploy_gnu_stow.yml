@@ -1,0 +1,54 @@
+---
+- name: Deploy GNU Stow dotfiles
+  hosts: all
+  become: false
+  
+  vars:
+    stow_dir: "{{ ansible_env.HOME }}/dotfiles"
+    local_stow_dir: "./dotfiles"  # Path to your local stow directory
+    stow_packages:
+      - vim
+      - bash
+      - git
+      - tmux
+      # Add your stow package names here
+    
+  tasks:
+    - name: Ensure stow is installed
+      become: true
+      package:
+        name: stow
+        state: present
+      when: ansible_os_family in ["Debian", "RedHat", "Archlinux"]
+
+    - name: Create dotfiles directory
+      file:
+        path: "{{ stow_dir }}"
+        state: directory
+        mode: '0755'
+
+    - name: Copy stow packages to remote host
+      synchronize:
+        src: "{{ local_stow_dir }}/"
+        dest: "{{ stow_dir }}/"
+        delete: false
+        recursive: true
+      delegate_to: localhost
+
+    - name: Check existing stow packages
+      command: stow -n -v -d "{{ stow_dir }}" -t "{{ ansible_env.HOME }}" {{ item }}
+      register: stow_check
+      changed_when: false
+      failed_when: false
+      loop: "{{ stow_packages }}"
+
+    - name: Stow packages
+      command: stow -d "{{ stow_dir }}" -t "{{ ansible_env.HOME }}" {{ item }}
+      loop: "{{ stow_packages }}"
+      register: stow_result
+      changed_when: stow_result.rc == 0
+
+    - name: Display stow results
+      debug:
+        msg: "Stowed {{ item }}"
+      loop: "{{ stow_packages }}"

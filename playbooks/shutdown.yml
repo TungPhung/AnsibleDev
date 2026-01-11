@@ -1,0 +1,21 @@
+---
+- name: Shutdown Linux systems
+  hosts: all
+  become: yes
+  gather_facts: no
+  
+  tasks:
+    - name: Send shutdown notification
+      ansible.builtin.shell: |
+        if command -v wall >/dev/null 2>&1; then
+          wall "System shutdown initiated by Ansible"
+        fi
+      ignore_errors: yes
+    
+    - name: Shutdown the system
+      ansible.builtin.shell: |
+        shutdown -h now || poweroff || halt -p
+      async: 0
+      poll: 0
+      ignore_errors: yes
+      ignore_unreachable: yes
