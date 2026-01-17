@@ -1,17 +1,28 @@
 ---
 - name: Update Fedora systems and install packages
-  hosts: fedora_servers
+  hosts: fedora_systems
   become: yes
   vars:
     # Define packages to install
     packages_to_install:
       - vim
       - git
-      - htop
+      - btop
       - tmux
       - curl
       - wget
-    
+      - firefox
+      - google-chrome
+      - bat
+      - ncdu
+      - tldr
+      - gnome-tweaks
+      - gnome-extensions
+      - pyflakes
+      - nmap
+      - wireguard
+      - python3-ansible-lint
+
     # Set to true to reboot after updates if needed
     reboot_after_update: false
     

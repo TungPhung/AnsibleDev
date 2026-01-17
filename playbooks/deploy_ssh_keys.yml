@@ -59,16 +59,3 @@
       command: restorecon -R /home/{{ ssh_user }}/.ssh
       when: ansible_selinux.status == "enabled"
       ignore_errors: yes
-
----
-# inventory.ini - Example inventory file
-[webservers]
-web1.example.com ansible_user=ubuntu
-web2.example.com ansible_user=ubuntu
-
-[databases]
-db1.example.com ansible_user=centos
-db2.example.com ansible_user=centos
-
-[all:vars]
-ansible_python_interpreter=/usr/bin/python3

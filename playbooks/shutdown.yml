@@ -11,6 +11,7 @@
           wall "System shutdown initiated by Ansible"
         fi
       ignore_errors: yes
+      tags: shutdown_notification
     
     - name: Shutdown the system
       ansible.builtin.shell: |
@@ -19,3 +20,4 @@
       poll: 0
       ignore_errors: yes
       ignore_unreachable: yes
+      tags: initiate_shutdown
