@@ -22,6 +22,8 @@
       - nmap
       - wireguard
       - python3-ansible-lint
+      - tig
+      - meld
 
     # Set to true to reboot after updates if needed
     reboot_after_update: false
