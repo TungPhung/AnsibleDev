@@ -24,6 +24,7 @@
       - python3-ansible-lint
       - tig
       - meld
+      - gcc
 
     # Set to true to reboot after updates if needed
     reboot_after_update: false
