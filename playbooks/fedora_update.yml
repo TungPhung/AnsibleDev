@@ -5,26 +5,26 @@
   vars:
     # Define packages to install
     packages_to_install:
-      - vim-enhanced
-      - git
-      - btop
-      - tmux
-      - curl
-      - wget
-      - firefox
-      - google-chrome
-      - bat
-      - ncdu
-      - tldr
-      - gnome-tweaks
-      - gnome-extensions
-      - pyflakes
-      - nmap
-      - wireguard
-      - python3-ansible-lint
-      - tig
-      - meld
-      - gcc
+      - vim-enhanced.x86_64
+      - git.x86_64
+      - btop.x86_64
+      - tmux.x86_64
+      - curl.x86_64
+      - wget2.x86_64
+      - firefox.x86_64
+      - google-chrome-stable.x86_64
+      - bat.x86_64
+      - ncdu.x86_64
+      - tldr.noarch
+      - gnome-tweaks.noarch
+      - gnome-extensions-app.x86_64
+      - python3-pyflakes.noarch 
+      - nmap.x86_64
+      - wireguard-tools.x86_64
+      - python3-ansible-lint.noarch
+      - tig.x86_64
+      - meld.noarch
+      - gcc.x86_64
 
     # Set to true to reboot after updates if needed
     reboot_after_update: false
