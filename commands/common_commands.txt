@@ -1,0 +1,1 @@
+ansible-playbook -i ./inventory/hosts.yml ./playbooks/fedora_update.yml --limit=fedora_systems --ask-pass --ask-become-pass -vvv
