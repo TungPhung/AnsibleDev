@@ -46,13 +46,17 @@
 
     - name: Install specific packages
       ansible.builtin.dnf:
-        name: "{{ packages_to_install }}"
+        name: "{{ item }}"
         state: present
+      loop: "{{ packages_to_install }}"
       register: install_result
 
     - name: Display installed packages
       ansible.builtin.debug:
-        msg: "Packages installed: {{ install_result.results | map(attribute='item') | list }}"
+        msg: "Packages installed: {{ install_result.results
+                                    | selectattr('changed')
+                                    | map(attribute='item')
+                                    | list }}"
       when: install_result.changed
 
     - name: Check if reboot is required
