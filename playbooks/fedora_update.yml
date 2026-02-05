@@ -5,7 +5,7 @@
   vars:
     # Define packages to install
     packages_to_install:
-      - vim
+      - vim-enhanced
       - git
       - btop
       - tmux
