@@ -25,6 +25,7 @@
       - tig.x86_64
       - meld.noarch
       - gcc.x86_64
+      - stow.noarch
 
     # Set to true to reboot after updates if needed
     reboot_after_update: false
