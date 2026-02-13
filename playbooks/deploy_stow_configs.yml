@@ -4,7 +4,7 @@
   become: false
   
   vars:
-    stow_dir: "{{ ansible_env.HOME }}/dotfiles"
+    stow_dir: "{{ ansible_env.HOME }}/.dotfiles"
     local_stow_dir: "/home/ttp2d/.dotfiles"  # Path to your local stow directory
     stow_packages:
       - vim
