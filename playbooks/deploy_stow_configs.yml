@@ -2,7 +2,7 @@
 - name: Deploy GNU Stow dotfiles
   hosts: all
   become: false
-  
+
   vars:
     stow_dir: "{{ ansible_env.HOME }}/.dotfiles"
     local_stow_dir: "/home/ttp2d/.dotfiles"  # Path to your local stow directory
@@ -12,7 +12,7 @@
       - git
       - tmux
       # Add your stow package names here
-    
+
   tasks:
     - name: Ensure stow is installed
       become: true
@@ -31,7 +31,7 @@
       synchronize:
         src: "{{ local_stow_dir }}/"
         dest: "{{ stow_dir }}/"
-        delete: false
+        delete: true
         recursive: true
       delegate_to: localhost
 
@@ -43,7 +43,7 @@
       loop: "{{ stow_packages }}"
 
     - name: Stow packages
-      command: stow -d "{{ stow_dir }}" -t "{{ ansible_env.HOME }}" {{ item }}
+      command: stow -d "{{ stow_dir }}" -t "{{ ansible_env.HOME }}" --restow {{ item }}
       loop: "{{ stow_packages }}"
       register: stow_result
       changed_when: stow_result.rc == 0
