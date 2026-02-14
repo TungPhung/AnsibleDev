@@ -18,8 +18,8 @@
           wifi.scan-rand-mac-address=no
           
           [connection]
-          wifi.cloned-mac-address=preserve
-          ethernet.cloned-mac-address=preserve
+          wifi.cloned-mac-address=permanent
+          ethernet.cloned-mac-address=permanent
         mode: '0644'
       notify: Restart NetworkManager
 
