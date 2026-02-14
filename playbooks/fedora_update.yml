@@ -26,6 +26,8 @@
       - meld.noarch
       - gcc.x86_64
       - stow.noarch
+      - clusterssh.noarch
+      - ansible.noarch
 
     # Set to true to reboot after updates if needed
     reboot_after_update: false
