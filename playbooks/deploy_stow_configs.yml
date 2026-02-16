@@ -27,6 +27,11 @@
         state: directory
         mode: '0755'
 
+    - name: Remove .bashrc file
+      ansible.builtin.file:
+        path: "{{ ansible_env.HOME }}/.bashrc"
+        state: absent
+
     - name: Copy stow packages to remote host
       synchronize:
         src: "{{ local_stow_dir }}/"
