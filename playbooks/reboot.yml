@@ -1,0 +1,18 @@
+---
+- name: Reboot Linux systems
+  hosts: all
+  become: yes
+  gather_facts: no
+  
+  tasks:
+    - name: Send reboot notification
+      ansible.builtin.shell: |
+        if command -v wall >/dev/null 2>&1; then
+          wall "System reboot initiated by Ansible"
+        fi
+      ignore_errors: yes
+      tags: reboot_notification
+    
+    - name: Reboot the system
+      ansible.builtin.reboot:
+        reboot_timeout: 600 # Wait 600 seconds for the machine to come back
