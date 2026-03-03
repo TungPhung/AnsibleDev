@@ -1,0 +1,15 @@
+---
+- name: Mask sleep and suspend targets
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Mask sleep-related systemd targets
+      ansible.builtin.systemd:
+        name: "{{ item }}"
+        masked: true
+      loop:
+        - sleep.target
+        - suspend.target
+        - hibernate.target
+        - hybrid-sleep.target
