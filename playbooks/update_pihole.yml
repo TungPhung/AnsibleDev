@@ -1,0 +1,13 @@
+---
+- name: Update Pi-hole
+  hosts: dns_pi 
+  become: true
+
+  tasks:
+    - name: Run pihole -up
+      command: pihole -up
+      register: pihole_update
+
+    - name: Show pihole update output
+      debug:
+        msg: "{{ pihole_update.stdout_lines }}"
