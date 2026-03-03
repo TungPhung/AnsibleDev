@@ -1,5 +1,5 @@
 ---
-- name: Mask sleep and suspend targets
+- name: Mask sleep and suspend targets as well as disable gdm inactive sleep
   hosts: all
   become: true
 
@@ -13,3 +13,10 @@
         - suspend.target
         - hibernate.target
         - hybrid-sleep.target
+
+  tasks:
+    - name: Disable sleep on AC power (inactive)
+      command: sudo -u gdm dbus-run-session gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-ac-type nothing
+
+    - name: Disable sleep on battery (inactive)
+      command: sudo -u gdm dbus-run-session gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-battery-type nothing
