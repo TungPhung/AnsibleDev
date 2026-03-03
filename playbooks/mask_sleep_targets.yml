@@ -20,3 +20,6 @@
 
     - name: Disable sleep on battery (inactive)
       command: sudo -u gdm dbus-run-session gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-battery-type nothing
+
+    - name: Disable sleep on battery (inactive)
+      command: sudo -u gdm dbus-run-session gsettings set org.gnome.desktop.session idle-delay 0
