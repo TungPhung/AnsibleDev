@@ -1,4 +1,5 @@
-ansible-playbook -i ./inventory/hosts.yml ./playbooks/fedora_update.yml --limit=fedora_systems --ask-pass --ask-become-pass -vvv
-ansible-playbook -i ./inventory/hosts.yml ./playbooks/deploy_stow_configs.yml --limit=fedora_systems --ask-pass --ask-become-pass -vvv
-ansible-playbook -i ./inventory/hosts.yml ./playbooks/disable_mac_randomization.yml --limit=fedora_systems --ask-pass --ask-become-pass -vvv
-ansible-playbook -i ./inventory/hosts.yml ./playbooks/shutdown.yml --limit=fedora_systems --ask-pass --ask-become-pass
+ansible-playbook -i ./inventory/hosts.yml ./playbooks/fedora_update.yml --limit=fedora_systems --ask-vault-pass
+ansible-playbook -i ./inventory/hosts.yml ./playbooks/deploy_stow_configs.yml --limit=fedora_systems --ask-vault-pass
+ansible-playbook -i ./inventory/hosts.yml ./playbooks/disable_mac_randomization.yml --limit=fedora_systems --ask-vault-pas
+ansible-playbook -i ./inventory/hosts.yml ./playbooks/shutdown.yml --limit=fedora_systems --ask-vault-pass
+ansible-playbook -i ./inventory/hosts.yml ./playbooks/fedora_update.yml --limit=fedora_systems --ask-vault-pass
