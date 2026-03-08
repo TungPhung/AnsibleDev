@@ -30,6 +30,8 @@
       - ansible.noarch
       - gnome-shell-extension-caffeine.noarch
       - fping.x86_64
+      - screen.x86_64
+      - minicom.x86_64
 
     # Set to true to reboot after updates if needed
     reboot_after_update: false
